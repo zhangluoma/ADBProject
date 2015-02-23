@@ -48,12 +48,15 @@ public class IRHelper{
 		keyWords = keyWords.toLowerCase();
 		keyWords = keyWords.trim();
 		String[] query = keyWords.split(" ");
+
+		double[] score = getScore(bol, keyWords);
+		
 		ArrayList<String> queryList = new ArrayList<String>();
 		for(String q:query){
 			queryList.add(q);
 		}
 
-		HashMap<String,Integer> map = new HashMap<String,Integer>();
+		HashMap<String,Double> map = new HashMap<String,Double>();
 		Set<String> stopwords = new HashSet<String>();
 
 		FileInputStream fstream = new FileInputStream("stopwords.txt");
@@ -65,10 +68,10 @@ public class IRHelper{
 		}
 		br.close();
 
-		for(BingObject bo : bol){
-			if(bo.flag){
-				bo.description = bo.description.toLowerCase();
-				String[] words = bo.description.split(" ");
+		for(int t = 0; t< bol.size();t++){
+			if(bol.get(t).flag){
+				bol.get(t).description = bol.get(t).description.toLowerCase();
+				String[] words = bol.get(t).description.split(" ");
 				for(int i=0;i<words.length;i++){
 
 					char[] arr = words[i].toCharArray();
@@ -89,19 +92,19 @@ public class IRHelper{
 						continue;
 					if(!stopwords.contains(words[i])){
 						if(!map.containsKey(words[i])){
-							map.put(words[i],1);
+							map.put(words[i],score[t]);
 						}else{
-							map.put(words[i],map.get(words[i])+1);
+							map.put(words[i],map.get(words[i])+score[t]);
 						}
 					}					
 				}
 			}
 		}
 		String[] keys = new String[2];
-		int[] count = new int[2];
-		for(int i=0;i<count.length;i++) count[i]=Integer.MIN_VALUE;
+		double[] count = new double[2];
+		for(int i=0;i<count.length;i++) count[i]=Double.MIN_VALUE;
 		for(String key:map.keySet()){
-			int currCount = map.get(key);
+			double currCount = map.get(key);
 			if(currCount>count[1]){
 				count[1]=currCount;
 				keys[1]=key;
