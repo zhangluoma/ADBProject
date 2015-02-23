@@ -70,7 +70,22 @@ public class IRHelper{
 				bo.description = bo.description.toLowerCase();
 				String[] words = bo.description.split(" ");
 				for(int i=0;i<words.length;i++){
-					if(queryList.indexOf(words[i]) >= 0 || words[i].charAt(0)<'a' && words[i].charAt(0)<'z')
+
+					char[] arr = words[i].toCharArray();
+
+					String str = "";
+
+					for(int j = 0; j<arr.length; j++){
+						if(arr[j] >='a' && arr[j] <='z' || arr[j] >='0' && arr[j]<='9')
+							str += arr[j];
+					}
+
+					words[i] = str;
+
+					if(words[i].length()<1)
+						continue;
+
+					if(queryList.indexOf(words[i]) >= 0)
 						continue;
 					if(!stopwords.contains(words[i])){
 						if(!map.containsKey(words[i])){
