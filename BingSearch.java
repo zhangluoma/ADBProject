@@ -41,15 +41,18 @@ public class BingSearch {
 		//The content string is the xml/json output from Bing.
 		//System.out.println(content);
 	}
-
 }
 class BingObject{
 	public String title;
 	public String description;
 	public String url;
+	public boolean flag;
 	public BingObject(String title,String description,String url){
 		this.title=title;
 		this.description=description;
 		this.url=url;
+	}
+	public void setRelevant(){
+		this.flag=true;
 	}
 }
