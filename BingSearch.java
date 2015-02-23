@@ -46,7 +46,7 @@ class BingObject{
 	public String title;
 	public String description;
 	public String url;
-	public boolean flag;
+	public boolean flag=true;
 	public BingObject(String title,String description,String url){
 		this.title=title;
 		this.description=description;
