@@ -22,7 +22,7 @@ public class test {
 			System.out.println();
 
 		}
-
-
+		String[] tmp = IRHelper.generateNewKey(result);
+		System.out.println(tmp[0]+"\n"+tmp[1]);
 	}
 }
