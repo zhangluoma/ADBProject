@@ -1,8 +1,8 @@
+import java.util.*;
 public class IRHelper{
 	public static String[] generateNewKey(ArrayList<BingObject> bol){
 		HashMap<String,Integer> map = new HashMap<String,Integer>();
 		for(BingObject bo : bol){
-
 		}
 	}
 	private String htmlFetch(String url){

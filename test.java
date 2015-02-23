@@ -1,9 +1,6 @@
 import java.util.*;
-
 public class test {
-
 	public static void main(String[] args){
-		
 		System.out.print("please input the precison and query:");
 		Scanner stdin = new Scanner(System.in);
 		String query = stdin.nextLine();
