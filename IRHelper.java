@@ -69,25 +69,22 @@ public class IRHelper{
 		br.close();
 
 		for(int t = 0; t< bol.size();t++){
+			bol.get(t).description = bol.get(t).description.toLowerCase();
+			String[] words = bol.get(t).description.split(" ");
+			for(int i=0;i<words.length;i++){
+
+				char[] arr = words[i].toCharArray();
+				String str = "";
+				for(int j = 0; j<arr.length; j++){
+					if(arr[j] >='a' && arr[j] <='z' || arr[j] >='0' && arr[j]<='9')
+						str += arr[j];
+				}
+				words[i] = str;
+			}
 			if(bol.get(t).flag){
-				bol.get(t).description = bol.get(t).description.toLowerCase();
-				String[] words = bol.get(t).description.split(" ");
 				for(int i=0;i<words.length;i++){
-
-					char[] arr = words[i].toCharArray();
-
-					String str = "";
-
-					for(int j = 0; j<arr.length; j++){
-						if(arr[j] >='a' && arr[j] <='z' || arr[j] >='0' && arr[j]<='9')
-							str += arr[j];
-					}
-
-					words[i] = str;
-
 					if(words[i].length()<1)
 						continue;
-
 					if(queryList.indexOf(words[i]) >= 0)
 						continue;
 					if(!stopwords.contains(words[i])){
@@ -95,6 +92,20 @@ public class IRHelper{
 							map.put(words[i],score[t]);
 						}else{
 							map.put(words[i],map.get(words[i])+score[t]);
+						}
+					}					
+				}
+			}else{
+				for(int i=0;i<words.length;i++){
+					if(words[i].length()<1)
+						continue;
+					if(queryList.indexOf(words[i]) >= 0)
+						continue;
+					if(!stopwords.contains(words[i])){
+						if(!map.containsKey(words[i])){
+							map.put(words[i], -1*score[t]);
+						}else{
+							map.put(words[i],map.get(words[i])-score[t]);
 						}
 					}					
 				}
