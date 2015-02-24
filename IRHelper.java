@@ -10,12 +10,13 @@ public class IRHelper{
 		keyWords = keyWords.trim();
 		String[] query = keyWords.split(" ");
 		double[] score = new double[bol.size()];
-		int[][] tf = new int[query.length][bol.size()];
+		double[][] tf = new double[query.length][bol.size()];
 		int[] df = new int[query.length];
 		for(int i = 0; i<query.length; i++){
 			for(int j = 0; j < bol.size(); j++){
 				String[] words = bol.get(j).description.split(" ");
 				int tmp = df[i];
+				tf[i][j] = 0.2;  // smoothing
 				for(int k=0;k<words.length;k++){
 					words[k] = words[k].toLowerCase();
 					if(words[k].equals(query[i])){
@@ -31,7 +32,7 @@ public class IRHelper{
 
 		double[] idf = new double[query.length];
 		for(int i = 0; i<query.length; i++){
-			idf[i] = Math.log((double)bol.size()/(double)df[i]);
+			idf[i] = Math.log(((double)bol.size()+1)/(double)df[i]);  // smoothing
 		}
 
 		for(int i = 0; i<score.length; i++){
@@ -39,6 +40,10 @@ public class IRHelper{
 				score[i] += tf[j][i] * idf[j];
 			}
 		}
+		/*
+		for(int i = 0; i<score.length; i++){
+			System.out.println(score[i]);
+		}*/
 		return score;
 
 
