@@ -14,9 +14,16 @@ public class IRHelper{
 		int[] df = new int[query.length];
 		for(int i = 0; i<query.length; i++){
 			for(int j = 0; j < bol.size(); j++){
-				String[] words = bol.get(j).description.split(" ");
+				String[] wordsDes = bol.get(j).description.split(" ");
+				String[] wordsTitle = bol.get(j).title.split(" ");
+				String[] words = new String[wordsDes.length+wordsTitle.length];
+				for(int k = 0; k<wordsDes.length; k++)
+					words[k] = wordsDes[k];
+				for(int k = 0; k<wordsTitle.length; k++)
+					words[k+wordsDes.length] = wordsTitle[k];
+
 				int tmp = df[i];
-				tf[i][j] = 0.2;  // smoothing
+				tf[i][j] = 0.5;  // smoothing
 				for(int k=0;k<words.length;k++){
 					words[k] = words[k].toLowerCase();
 					if(words[k].equals(query[i])){
@@ -49,7 +56,7 @@ public class IRHelper{
 
 	}
 
-	public static String[] generateNewKey(ArrayList<BingObject> bol, String keyWords) throws IOException{
+	public static String[] generateNewKey(ArrayList<BingObject> bol, String keyWords, int countnum) throws IOException{
 		keyWords = keyWords.toLowerCase();
 		keyWords = keyWords.trim();
 		String[] query = keyWords.split(" ");
@@ -75,7 +82,23 @@ public class IRHelper{
 
 		for(int t = 0; t< bol.size();t++){
 			bol.get(t).description = bol.get(t).description.toLowerCase();
-			String[] words = bol.get(t).description.split(" ");
+			bol.get(t).title = bol.get(t).title.toLowerCase();
+			String[] wordsDes = bol.get(t).description.split(" ");
+			for(int i = 0; i<wordsDes.length; i++){
+				System.out.println(wordsDes[i]);
+			}
+			String[] wordsTitle = bol.get(t).title.split(" ");
+			for(int i = 0; i<wordsTitle.length; i++){
+				System.out.println(wordsTitle[i]);
+			}
+			String[] words = new String[wordsDes.length+wordsTitle.length];
+			for(int i = 0; i<wordsDes.length; i++){
+				words[i] = wordsDes[i];
+			}
+			for(int i = 0; i<wordsTitle.length; i++){
+				words[i+wordsDes.length] = wordsTitle[i];
+			}
+
 			for(int i=0;i<words.length;i++){
 
 				char[] arr = words[i].toCharArray();
@@ -94,9 +117,9 @@ public class IRHelper{
 						continue;
 					if(!stopwords.contains(words[i])){
 						if(!map.containsKey(words[i])){
-							map.put(words[i],score[t]);
+							map.put(words[i],score[t]*(double)countnum/10);
 						}else{
-							map.put(words[i],map.get(words[i])+score[t]);
+							map.put(words[i],map.get(words[i])+score[t]*(double)countnum/10);
 						}
 					}					
 				}
@@ -108,9 +131,9 @@ public class IRHelper{
 						continue;
 					if(!stopwords.contains(words[i])){
 						if(!map.containsKey(words[i])){
-							map.put(words[i], -1*score[t]);
+							map.put(words[i], -1*score[t]*(1-(double)countnum/10));
 						}else{
-							map.put(words[i],map.get(words[i])-score[t]);
+							map.put(words[i], map.get(words[i])-score[t]*(1-(double)countnum/10));
 						}
 					}					
 				}
@@ -121,6 +144,7 @@ public class IRHelper{
 		for(int i=0;i<count.length;i++) count[i]=Double.MIN_VALUE;
 		for(String key:map.keySet()){
 			double currCount = map.get(key);
+			System.out.println("key="+key+" count="+map.get(key));
 			if(currCount>count[1]){
 				count[1]=currCount;
 				keys[1]=key;
@@ -128,7 +152,6 @@ public class IRHelper{
 				count[0]=currCount;
 				keys[0]=key;
 			}
-			//System.out.println("key="+key+" count="+map.get(key));
 		}
 		return keys;
 	}

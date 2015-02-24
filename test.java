@@ -35,7 +35,7 @@ public class test {
 				System.exit(1);
 			}else if(count<precision*result.size()){
 				try {
-					String[] tmp = IRHelper.generateNewKey(result, query);
+					String[] tmp = IRHelper.generateNewKey(result, query, count);
 					System.out.println("=====================");
 					System.out.println("FEEDBACK");
 					System.out.println("precision:"+(float)count/10);
