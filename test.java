@@ -17,7 +17,7 @@ public class test {
 			}
 			int count=0;
 			for(int i = 0; i< result.size(); i++){
-				System.out.println("-------- No. "+i+" -------------------");
+				System.out.println("--------------- No. "+i+" -------------------");
 				System.out.println(result.get(i).title);
 				System.out.println(result.get(i).description);
 				System.out.println("do you think it is relevant? Y/N");
