@@ -8,9 +8,19 @@ import java.util.*;
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+/**
+* BingSearch used to search information
+*
+* @author  Luoma Zhang, Huaiyuan Cao
+* @version 1.0
+* @since   2015.2.25
+*/
 public class BingSearch {
-	public static ArrayList<BingObject> search(String keyWords,float precision) throws IOException {
+	/**
+	* this method is used to search a list of result from Bing with given keyWords. 
+	* @param keyWords the given keywords to search
+	*/
+	public static ArrayList<BingObject> search(String keyWords) throws IOException {
 		keyWords = keyWords.trim();
 		String words = keyWords.replaceAll(" ","%20");
 		String bingUrl = "https://api.datamarket.azure.com/Bing/Search/Web?Query=%27"+words+"%27&$top=10&$format=JSon";
@@ -42,6 +52,12 @@ public class BingSearch {
 		//System.out.println(content);
 	}
 }
+/**
+* BingObject contains the retrieved information
+* @author  Luoma Zhang, Huaiyuan Cao
+* @version 1.0
+* @since   2015.2.25
+*/
 class BingObject{
 	public String title;
 	public String description;
@@ -52,6 +68,9 @@ class BingObject{
 		this.description=description;
 		this.url=url;
 	}
+	/**
+	* mark the object to be relavant
+	*/
 	public void setRelevant(){
 		this.flag=true;
 	}

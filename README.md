@@ -1,2 +1,0 @@
-# ADBProject
-ADB
